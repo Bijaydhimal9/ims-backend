@@ -1,11 +1,32 @@
-namespace Domain.Enums
+namespace Domain.Enums;
+
+/// <summary>
+/// Represents the status of a booking
+/// </summary>
+public enum BookingStatus
 {
-    public enum BookingStatus
-    {
-        Active = 1,
-        Released = 2,
-        Transferred = 3,
-        Escaped = 4,
-        Deceased = 5
-    }
+    /// <summary>
+    /// Represents an active booking
+    /// </summary>
+    Active = 1,
+
+    /// <summary>
+    /// Represents a released booking
+    /// </summary>
+    Released = 2,
+
+    /// <summary>
+    /// Represents a transferred booking
+    /// </summary>
+    Transferred = 3,
+
+    /// <summary>
+    /// Represents an escaped booking
+    /// </summary>
+    Escaped = 4,
+
+    /// <summary>
+    /// Represents a deceased booking
+    /// </summary>
+    Deceased = 5
 }

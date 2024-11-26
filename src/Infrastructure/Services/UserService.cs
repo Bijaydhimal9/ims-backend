@@ -66,7 +66,7 @@ namespace Infrastructure.Services
                 {
                     Email = user.Email,
                     UserId = user.Id,
-                    Name = user.FullName,
+                    Name = $"{user.FirstName} {user.LastName}"
                 };
                 JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
                 authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);

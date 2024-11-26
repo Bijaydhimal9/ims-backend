@@ -40,6 +40,10 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
@@ -196,6 +200,141 @@ namespace Infrastructure.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "InmateProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FirstName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MiddleName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CitizenshipNumber = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Gender = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Address = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmergencyContact = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmergencyContactPhone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UpdatedOn = table.Column<DateTime>(type: "DATETIME", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InmateProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InmateProfiles_AspNetUsers_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    InmateId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    BookingNumber = table.Column<string>(type: "VARCHAR(20)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BookingDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FacilityName = table.Column<string>(type: "VARCHAR(100)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BookingLocation = table.Column<string>(type: "VARCHAR(200)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ReleaseDate = table.Column<DateTime>(type: "DATETIME", nullable: true),
+                    ReleaseReason = table.Column<string>(type: "VARCHAR(500)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Comments = table.Column<string>(type: "VARCHAR(1000)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UpdatedOn = table.Column<DateTime>(type: "DATETIME", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_InmateProfiles_InmateId",
+                        column: x => x.InmateId,
+                        principalTable: "InmateProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Charges",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    BookingId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ChargeName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ChargeCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ChargeDate = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UpdatedOn = table.Column<DateTime>(type: "DATETIME", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Charges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Charges_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Charges_AspNetUsers_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Charges_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -232,6 +371,49 @@ namespace Infrastructure.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_BookingNumber",
+                table: "Bookings",
+                column: "BookingNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_CreatedBy",
+                table: "Bookings",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_InmateId_Status",
+                table: "Bookings",
+                columns: new[] { "InmateId", "Status" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_ApplicationUserId",
+                table: "Charges",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_BookingId",
+                table: "Charges",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_CreatedBy",
+                table: "Charges",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InmateProfiles_CitizenshipNumber_DateOfBirth",
+                table: "InmateProfiles",
+                columns: new[] { "CitizenshipNumber", "DateOfBirth" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InmateProfiles_CreatedBy",
+                table: "InmateProfiles",
+                column: "CreatedBy");
         }
 
         /// <inheritdoc />
@@ -253,7 +435,16 @@ namespace Infrastructure.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Charges");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "InmateProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

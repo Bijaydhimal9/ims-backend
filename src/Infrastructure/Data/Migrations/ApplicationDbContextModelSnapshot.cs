@@ -105,56 +105,46 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("BookingLocation")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("VARCHAR(200)");
 
                     b.Property<string>("BookingNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("VARCHAR(20)");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("VARCHAR(1000)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("created_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("created_on");
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("FacilityName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("VARCHAR(100)");
 
                     b.Property<Guid>("InmateId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("ReleaseDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("ReleaseReason")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("VARCHAR(500)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("updated_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("updated_on");
+                        .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 
@@ -183,10 +173,12 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("ChargeCode")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("ChargeDate")
-                        .HasColumnType("datetime(6)");
+                        .IsRequired()
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("ChargeName")
                         .IsRequired()
@@ -196,29 +188,25 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("created_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("created_on");
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("updated_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("updated_on");
+                        .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 
@@ -238,7 +226,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -250,23 +237,19 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("created_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("created_on");
+                        .HasColumnType("DATETIME");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("EmergencyContact")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("EmergencyContactPhone")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
@@ -275,8 +258,9 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -284,23 +268,19 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("updated_by");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("updated_on");
+                        .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 

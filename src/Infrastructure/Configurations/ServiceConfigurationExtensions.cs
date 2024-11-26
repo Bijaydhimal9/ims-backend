@@ -21,14 +21,6 @@ namespace Infrastructure.Configurations
     public static class ServiceConfigurationExtensions
     {
 
-        // public static async Task SeedDataAsync(this IServiceCollection services)
-        // {
-        //     using var serviceProvider = services.BuildServiceProvider();
-        //     using var scope = serviceProvider.CreateScope();
-        //     var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        //     await initializer.InitializeAsync();
-        // }
-
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
@@ -45,7 +37,6 @@ namespace Infrastructure.Configurations
                 options.Password.RequiredLength = 12;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddHostedService<IdentityDataSeeder>();
 
