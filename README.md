@@ -3,7 +3,7 @@
 To add a new migration from the root folder
 
 ```
-dotnet ef migrations add "migration message" --project src/Infrastructure --startup-project src/Web -o Persistence/Migrations
+dotnet ef migrations add "migration message" --project src/Infrastructure --startup-project src/Web -o Data/Migrations
 ```
 
 To remove migrations 

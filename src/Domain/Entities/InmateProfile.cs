@@ -7,7 +7,7 @@ using Domain.Enums;
 
 namespace Domain.Entities
 {
-    public class Inmate : AuditableEntity
+    public class InmateProfile : AuditableEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -22,7 +22,7 @@ namespace Infrastructure.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -40,6 +40,14 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -84,6 +92,224 @@ namespace Infrastructure.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Booking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("BookingLocation")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("BookingNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("FacilityName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("InmateId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("ReleaseDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ReleaseReason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingNumber")
+                        .IsUnique();
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("InmateId", "Status")
+                        .IsUnique();
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Charge", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ChargeCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ChargeDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ChargeName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.ToTable("Charges");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InmateProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("CitizenshipNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("created_on");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("EmergencyContact")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("EmergencyContactPhone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("CitizenshipNumber", "DateOfBirth")
+                        .IsUnique();
+
+                    b.ToTable("InmateProfiles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -218,6 +444,59 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Booking", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Bookings")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.InmateProfile", "InmateProfile")
+                        .WithMany("Bookings")
+                        .HasForeignKey("InmateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("InmateProfile");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Charge", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
+                        .WithMany("Charges")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Domain.Entities.Booking", "Booking")
+                        .WithMany("Charges")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Booking");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InmateProfile", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Inmates")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -229,7 +508,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -238,7 +517,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -253,7 +532,7 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -262,11 +541,30 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Charges");
+
+                    b.Navigation("Inmates");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Booking", b =>
+                {
+                    b.Navigation("Charges");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InmateProfile", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
+using Application.Common.Mapping;
 using Application.Common.Models.RequestModels;
 using Application.Common.Validators;
 using Domain.Entities;
@@ -36,11 +37,16 @@ namespace Infrastructure.Configurations
                 options.Password.RequiredLength = 12;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IInmateProfileService, InmateProfileService>();
+            services.AddTransient<IBookingService, BookingService>();
 
             services.AddSingleton<IValidator<LoginRequestModel>, LoginValidator>();
+            services.AddSingleton<IValidator<InmateProfileRequestModel>, InmateProfileValidator>();
+            services.AddSingleton<IValidator<BookingRequestModel>, BookingValidator>();
             return services;
         }
     }

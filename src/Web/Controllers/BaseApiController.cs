@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,17 +15,17 @@ namespace Web.Controllers
     {
         private CurrentUser _currentUser;
 
-        //   protected CurrentUser CurrentUser
-        // {
-        //     get
-        //     {
-        //         if (_currentUser == null && User.Identity.IsAuthenticated)
-        //         {
-        //             _currentUser = User.();
-        //         }
-        //         return _currentUser;
-        //     }
-        // }
+        protected CurrentUser CurrentUser
+        {
+            get
+            {
+                if (_currentUser == null && User?.Identity?.IsAuthenticated == true)
+                {
+                    _currentUser = User.ToLoggedInUser();
+                }
+                return _currentUser;
+            }
+        }
 
         protected BaseApiController() { }
     }
