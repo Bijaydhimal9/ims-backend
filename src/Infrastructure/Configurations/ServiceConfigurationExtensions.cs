@@ -39,6 +39,8 @@ namespace Infrastructure.Configurations
 
             services.AddAutoMapper(typeof(MappingProfile));
 
+            services.AddScoped<IDbInitializer, DatabaseInitializer>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IInmateProfileService, InmateProfileService>();
@@ -47,6 +49,9 @@ namespace Infrastructure.Configurations
             services.AddSingleton<IValidator<LoginRequestModel>, LoginValidator>();
             services.AddSingleton<IValidator<InmateProfileRequestModel>, InmateProfileValidator>();
             services.AddSingleton<IValidator<BookingRequestModel>, BookingValidator>();
+
+            services.AddHostedService<DatabaseSeeder>();
+
             return services;
         }
     }
