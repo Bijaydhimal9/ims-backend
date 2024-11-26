@@ -47,7 +47,7 @@ namespace Infrastructure.Configurations
 
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.AddScoped<IDbInitializer, DatabaseInitializer>();
+            services.AddHostedService<IdentityDataSeeder>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
@@ -58,7 +58,6 @@ namespace Infrastructure.Configurations
             services.AddSingleton<IValidator<InmateProfileRequestModel>, InmateProfileValidator>();
             services.AddSingleton<IValidator<BookingRequestModel>, BookingValidator>();
 
-            services.AddHostedService<DatabaseSeeder>();
 
 
 

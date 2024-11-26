@@ -13,5 +13,6 @@ namespace Domain.Entities
         public List<Booking> Bookings { get; set; } = new List<Booking>();
         public List<InmateProfile> Inmates { get; set; } = new List<InmateProfile>();
         public IList<Charge> Charges { get; set; } = new List<Charge>();
+        public string FullName => $"{FirstName} {LastName}".Trim();
     }
 }

@@ -40,6 +40,7 @@ namespace Infrastructure.Services
             _logger = logger;
             _userManager = userManager;
             _signinManager = signInManager;
+            _jwt = jwt.Value;
 
         }
 
@@ -47,7 +48,7 @@ namespace Infrastructure.Services
         {
             try
             {
-                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == model.Email.ToLower());
+                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == model.Email.ToLower());
                 if (user == null)
                 {
                     throw new ForbiddenException("Invalid email or password");
@@ -61,14 +62,21 @@ namespace Infrastructure.Services
                 }
 
                 var authenticationModel = new AuthenticationModel();
+                var userModel = new UserModel
+                {
+                    Email = user.Email,
+                    UserId = user.Id,
+                    Name = user.FullName,
+                };
                 JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
                 authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-                authenticationModel.Email = user.Email;
-                authenticationModel.ExpirationDuration = Convert.ToInt32(_jwt.DurationInMinutes);
+                authenticationModel.User = userModel;
+
                 return authenticationModel;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw ex is ServiceException ? ex : new ServiceException(ex.Message);
             }
         }
@@ -92,7 +100,7 @@ namespace Infrastructure.Services
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
             var jwtSecurityToken = new JwtSecurityToken(
             issuer: _jwt.Issuer,
                 audience: _jwt.Audience,

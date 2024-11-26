@@ -7,9 +7,7 @@ namespace Application.Common.Dtos
 {
     public class AuthenticationModel
     {
-        public string Email { get; set; }
+        public UserModel User { get; set; }
         public string Token { get; set; }
-        public int ExpirationDuration { get; set; }
-        public string RefreshToken { get; set; }
     }
 }
