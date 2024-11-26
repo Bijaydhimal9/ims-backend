@@ -12,13 +12,20 @@ namespace Infrastructure.Data
             _serviceProvider = serviceProvider;
         }
 
+
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            using var scope = _serviceProvider.CreateScope();
+            await SeedData(_serviceProvider);
+        }
+
+        public static async Task SeedData(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
             var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
             await initializer.InitializeAsync();
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
-} 
+}

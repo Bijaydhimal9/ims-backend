@@ -26,8 +26,8 @@ mono_crash.*
 [Oo]bj/
 
 # Specific project paths (if above patterns don't work)
-**/src/Infrastructure/obj/*
-**/src/Infrastructure/bin/*
+/src/Infrastructure/obj/*
+/src/Infrastructure/bin/*
 
 src/Application/obj/*
 src/Application/bin/*
