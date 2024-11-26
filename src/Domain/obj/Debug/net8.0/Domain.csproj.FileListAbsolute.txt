@@ -10,3 +10,4 @@
 /Users/bijaydhimal/Documents/AcmeProject/ims-backend/src/Domain/obj/Debug/net8.0/refint/Domain.dll
 /Users/bijaydhimal/Documents/AcmeProject/ims-backend/src/Domain/obj/Debug/net8.0/Domain.pdb
 /Users/bijaydhimal/Documents/AcmeProject/ims-backend/src/Domain/obj/Debug/net8.0/ref/Domain.dll
+/Users/bijaydhimal/Documents/AcmeProject/ims-backend/src/Domain/obj/Debug/net8.0/Domain.csproj.AssemblyReference.cache

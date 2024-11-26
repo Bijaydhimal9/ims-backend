@@ -792,6 +792,10 @@
         }
       },
       "Domain/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.11",
+          "Microsoft.EntityFrameworkCore": "8.0.11"
+        },
         "runtime": {
           "Domain.dll": {
             "assemblyVersion": "1.0.0",
