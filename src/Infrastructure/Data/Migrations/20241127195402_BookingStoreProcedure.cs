@@ -7,8 +7,7 @@ namespace Infrastructure.Data.Migrations
     /// <inheritdoc />
     public partial class BookingStoreProcedure : Migration
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
+         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
             CREATE PROCEDURE GetPaginatedBookings(
@@ -49,9 +48,17 @@ namespace Infrastructure.Data.Migrations
             END;
         ");
 
-            // CreateBooking stored procedure
             migrationBuilder.Sql(@"
-            CREATE PROCEDURE CreateBooking(
+            CREATE PROCEDURE GetBookingByIdentity(
+            IN Id VARCHAR(50)
+            )
+            BEGIN
+                SELECT * FROM Bookings WHERE Id = Id; 
+            END
+            ");
+
+            migrationBuilder.Sql(@"
+           CREATE PROCEDURE CreateBooking(
                 IN Id VARCHAR(50),
                 IN InmateId VARCHAR(50),
                 IN BookingNumber VARCHAR(255),
@@ -59,26 +66,52 @@ namespace Infrastructure.Data.Migrations
                 IN FacilityName VARCHAR(255),
                 IN BookingLocation VARCHAR(255),
                 IN Status VARCHAR(50),
-                IN Comments TEXT,
                 IN CreatedOn DATETIME,
-                IN CreatedBy VARCHAR(50)
+                IN CreatedBy VARCHAR(50),
+                IN ChargeId VARCHAR(50),
+                IN BookingChargeId VARCHAR(50)
             )
             BEGIN
+                DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+                BEGIN
+                    ROLLBACK;
+                    RESIGNAL;
+                END;
+
+                START TRANSACTION;
+                
                 INSERT INTO Bookings (
                     Id, InmateId, BookingNumber, BookingDate, 
                     FacilityName, BookingLocation, Status, 
-                    Comments, CreatedOn, CreatedBy
+                    CreatedOn, CreatedBy
                 )
                 VALUES (
                     Id, InmateId, BookingNumber, BookingDate,
                     FacilityName, BookingLocation, Status,
-                    Comments, CreatedOn, CreatedBy
+                    CreatedOn, CreatedBy
                 );
+
+                INSERT INTO BookingCharges (
+                    Id,
+                    BookingId, 
+                    ChargeId, 
+                    CreatedOn, 
+                    CreatedBy
+                )
+                VALUES (
+                    BookingChargeId,
+                    Id,
+                    ChargeId,
+                    CreatedOn,
+                    CreatedBy
+                );
+
+                COMMIT;
             END;
         ");
 
             migrationBuilder.Sql(@"
-            CREATE PROCEDURE UpdateBooking(
+           CREATE PROCEDURE UpdateBooking(
                 IN Id VARCHAR(50),
                 IN InmateId VARCHAR(50),
                 IN BookingDate DATETIME,
@@ -88,9 +121,24 @@ namespace Infrastructure.Data.Migrations
                 IN ReleaseReason VARCHAR(255),
                 IN Comments TEXT,
                 IN UpdatedOn DATETIME,
-                IN UpdatedBy VARCHAR(50)
+                IN UpdatedBy VARCHAR(50),
+                IN ChargeId VARCHAR(50)
             )
             BEGIN
+                DECLARE CurrentChargeId VARCHAR(50);
+                DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+                BEGIN
+                    ROLLBACK;
+                    RESIGNAL;
+                END;
+
+                START TRANSACTION;
+                
+                SELECT ChargeId INTO CurrentChargeId
+                FROM BookingCharge
+                WHERE BookingId = Id
+                LIMIT 1;
+
                 UPDATE Bookings
                 SET 
                     InmateId = InmateId,
@@ -103,7 +151,30 @@ namespace Infrastructure.Data.Migrations
                     UpdatedOn = UpdatedOn,
                     UpdatedBy = UpdatedBy
                 WHERE Id = Id;
+
+                IF CurrentChargeId IS NULL OR CurrentChargeId != ChargeId THEN
+                    -- Delete existing BookingCharge
+                    DELETE FROM BookingCharge
+                    WHERE BookingId = Id;
+
+
+                    INSERT INTO BookingCharge (
+                        BookingId,
+                        ChargeId,
+                        CreatedOn,
+                        CreatedBy
+                    )
+                    VALUES (
+                        Id,
+                        ChargeId,
+                        UpdatedOn,
+                        UpdatedBy
+                    );
+                END IF;
+
+                COMMIT;
             END;
+
         ");
 
             migrationBuilder.Sql(@"
@@ -127,6 +198,8 @@ namespace Infrastructure.Data.Migrations
                 WHERE Id = BookingIdentity;
             END;
         ");
+
+
         }
 
         /// <inheritdoc />

@@ -1,8 +1,6 @@
-namespace Application.Common.Dtos
+namespace Application.Common.Dtos;
+public enum SortType
 {
-    public enum SortType
-    {
-        Ascending,
-        Descending,
-    }
+    Ascending,
+    Descending,
 }

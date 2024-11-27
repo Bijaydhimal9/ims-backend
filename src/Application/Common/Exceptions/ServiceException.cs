@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
-namespace Application.Common.Exceptions
-{
+namespace Application.Common.Exceptions;
     [Serializable]
     public class ServiceException : Exception
     {
@@ -48,4 +43,3 @@ namespace Application.Common.Exceptions
         /// </param>
         protected ServiceException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
-}

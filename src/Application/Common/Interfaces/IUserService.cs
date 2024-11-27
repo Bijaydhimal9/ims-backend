@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Application.Common.Dtos;
 using Application.Common.Models.RequestModels;
 
-namespace Application.Common.Interfaces
+namespace Application.Common.Interfaces;
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<AuthenticationModel> VerifyUserAndGetToken(LoginRequestModel model);
-    }
+    Task<AuthenticationModel> VerifyUserAndGetToken(LoginRequestModel model);
 }

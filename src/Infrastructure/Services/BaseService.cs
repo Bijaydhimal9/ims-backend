@@ -1,76 +1,70 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Infrastructure.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Services
+namespace Infrastructure.Services;
+public abstract class BaseService
 {
-    public abstract class BaseService
+
+    protected readonly IUnitOfWork _unitOfWork;
+
+    protected readonly ILogger _logger;
+
+    protected BaseService(IUnitOfWork unitOfWork, ILogger logger)
     {
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+    }
 
-        protected readonly IUnitOfWork _unitOfWork;
-
-        protected readonly ILogger _logger;
-
-        protected BaseService(IUnitOfWork unitOfWork, ILogger logger)
+    protected TResult ExecuteWithResult<TResult>(Func<TResult> delegateFunc)
+    {
+        try
         {
-            _logger = logger;
-            _unitOfWork = unitOfWork;
+            return delegateFunc();
         }
-
-        protected TResult ExecuteWithResult<TResult>(Func<TResult> delegateFunc)
+        catch (Exception ex)
         {
-            try
-            {
-                return delegateFunc();
-            }
-            catch (Exception ex)
-            {
-                this._logger.LogError(ex.Message, ex);
-                throw ex is ServiceException ? ex : new ServiceException(ex.Message);
-            }
+            this._logger.LogError(ex.Message, ex);
+            throw ex is ServiceException ? ex : new ServiceException(ex.Message);
         }
+    }
 
-        protected async Task<TResult> ExecuteWithResultAsync<TResult>(Func<Task<TResult>> delegateFunc)
+    protected async Task<TResult> ExecuteWithResultAsync<TResult>(Func<Task<TResult>> delegateFunc)
+    {
+        try
         {
-            try
-            {
-                return await delegateFunc().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                this._logger.LogError(ex.Message, ex);
-                throw ex is ServiceException ? ex : new ServiceException(ex.Message);
-            }
+            return await delegateFunc().ConfigureAwait(false);
         }
-
-        protected async Task Execute(Func<Task> delegateFunc)
+        catch (Exception ex)
         {
-            try
-            {
-                await delegateFunc().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                this._logger.LogError(ex.Message, ex);
-                throw ex is ServiceException ? ex : new ServiceException(ex.Message);
-            }
+            this._logger.LogError(ex.Message, ex);
+            throw ex is ServiceException ? ex : new ServiceException(ex.Message);
         }
+    }
 
-        protected async Task ExecuteAsync(Func<Task> delegateFunc)
+    protected async Task Execute(Func<Task> delegateFunc)
+    {
+        try
         {
-            try
-            {
-                await delegateFunc().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                this._logger.LogError(ex.Message, ex);
-                throw ex is ServiceException ? ex : new ServiceException(ex.Message);
-            }
+            await delegateFunc().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            this._logger.LogError(ex.Message, ex);
+            throw ex is ServiceException ? ex : new ServiceException(ex.Message);
+        }
+    }
+
+    protected async Task ExecuteAsync(Func<Task> delegateFunc)
+    {
+        try
+        {
+            await delegateFunc().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            this._logger.LogError(ex.Message, ex);
+            throw ex is ServiceException ? ex : new ServiceException(ex.Message);
         }
     }
 }

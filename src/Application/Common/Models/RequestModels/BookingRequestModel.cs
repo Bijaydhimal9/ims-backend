@@ -26,17 +26,7 @@ public class BookingRequestModel
     public string BookingLocation { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the release date
-    /// </summary>
-    public DateTime? ReleaseDate { get; set; }
-
-    /// <summary>
-    /// Gets or sets the release reason
-    /// </summary>
-    public string? ReleaseReason { get; set; }
-
-    /// <summary>
     /// Gets or sets the charges
     /// </summary>
-    public List<Guid> ChargesIds { get; set; } = new();
+    public Guid ChargeId { get; set; } = new();
 }

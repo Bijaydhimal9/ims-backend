@@ -44,6 +44,7 @@ namespace Infrastructure.Configurations
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IInmateProfileService, InmateProfileService>();
             services.AddTransient<IBookingService, BookingService>();
+            services.AddTransient<IChargeService, ChargeService>();
 
             services.AddSingleton<IValidator<LoginRequestModel>, LoginValidator>();
             services.AddSingleton<IValidator<InmateProfileRequestModel>, InmateProfileValidator>();

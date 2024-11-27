@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Common.Dtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Common.Interfaces
-{
+namespace Application.Common.Interfaces;
     public static class IQueryablePageListExtensions
     {
         /// <summary>
@@ -87,4 +82,3 @@ namespace Application.Common.Interfaces
             };
         }
     }
-}

@@ -29,22 +29,14 @@ public class BookingResponseModel
     /// Gets or sets the booking date
     /// </summary>
     public DateTime BookingDate { get; set; }
-    /// <summary>
-    /// Gets or sets the expected release date
+      /// <summary>
+    /// Get or set release date
     /// </summary>
-    public DateTime? ExpectedReleaseDate { get; set; }
-    /// <summary>
-    /// Gets or sets the actual release date
-    /// </summary>
-    public DateTime? ActualReleaseDate { get; set; }
+    public DateTime? ReleaseDate { get; set; }
     /// <summary>
     /// Gets or sets the release reason
     /// </summary>
     public string? ReleaseReason { get; set; }
-    /// <summary>
-    /// Gets or sets the charges
-    /// </summary>
-    public List<BookingChargeResponse> Charges { get; set; } = new();
     /// <summary>
     /// Gets or sets the created at date
     /// </summary>

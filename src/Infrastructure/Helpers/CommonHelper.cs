@@ -7,8 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Infrastructure.Helpers
-{
+namespace Infrastructure.Helpers;
     /// <summary>
     /// This class is the helper class for this project.
     /// </summary>
@@ -329,4 +328,3 @@ namespace Infrastructure.Helpers
             return Regex.IsMatch(email, emailPattern);
         }
     }
-}
