@@ -14,8 +14,8 @@ namespace Application.Common.Interfaces
         /// <param name="pageNumber">the page number</param>
         /// <param name="pageSize">the page size</param>
         /// <param name="searchTerm">the search term</param>
-        /// <returns>the paginated result of booking response model <see cref="BookingResponseModel"/></returns>
-        Task<PaginatedResult<BookingResponseModel>> GetPaginatedBookingsAsync(BaseSearchCriteria criteria);
+        /// <returns>the paginated result of booking response model <see cref="BookingListResponseModel"/></returns>
+        Task<PaginatedResult<BookingListResponseModel>> GetPaginatedBookingsAsync(BaseSearchCriteria criteria);
 
         /// <summary>
         /// Get booking by id

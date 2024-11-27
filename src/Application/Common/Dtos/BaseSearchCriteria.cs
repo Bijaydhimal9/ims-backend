@@ -1,37 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Application.Common.Dtos;
 
-namespace Application.Common.Dtos
+/// <summary>
+/// Base search criteria.
+/// </summary>
+public class BaseSearchCriteria
 {
-    public class BaseSearchCriteria
+    
+    /// <summary>
+    /// Gets or sets the page.
+    /// </summary>
+    public int Page { get; set; } = 1;
+
+    /// <summary>
+    /// Gets or sets the size.
+    /// </summary>
+    public int Size { get; set; } = 10;
+
+    /// <summary>
+    /// Gets or sets the search.
+    /// </summary>
+    private string? _search;
+
+    /// <summary>
+    /// Gets or sets the search.
+    /// </summary>
+    public string? Search
     {
+        get { return _search; }
+        set { _search = value?.Trim().ToLower(); }
+    }
 
-        public Guid CurrentUserId { get; set; }
+    /// <summary>
+    /// Gets or sets the sort by.
+    /// </summary>
+    public string? SortBy { get; set; }
 
+    /// <summary>
+    /// Gets or sets the sort type.
+    /// </summary>
+    public SortType SortType { get; set; } = SortType.Ascending;
 
-        public int Page { get; set; } = 1;
-
-
-        public int Size { get; set; } = 10;
-
-
-        private string _search;
-
-        public string Search
-        {
-            get { return _search; }
-            set { _search = value?.Trim().ToLower(); }
-        }
-
-
-        public string SortBy { get; set; }
-
-        public SortType SortType { get; set; }
-
-        public BaseSearchCriteria()
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseSearchCriteria"/> class.
+    /// </summary>
+    public BaseSearchCriteria()
+    {
     }
 }

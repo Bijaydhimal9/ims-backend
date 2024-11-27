@@ -32,7 +32,7 @@ namespace Web.Controllers
         /// <param name="searchTerm">the search term</param>
         /// <returns>the paginated result of booking response model <see cref="BookingResponseModel"/></returns>
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<BookingResponseModel>>> GetPaginatedBookingsAsync([FromQuery] BaseSearchCriteria criteria)
+        public async Task<ActionResult<PaginatedResult<BookingListResponseModel>>> GetPaginatedBookingsAsync([FromQuery] BaseSearchCriteria criteria)
         {
             return await _bookingService.GetPaginatedBookingsAsync(criteria);
         }

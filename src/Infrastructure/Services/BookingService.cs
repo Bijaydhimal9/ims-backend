@@ -35,7 +35,7 @@ namespace Infrastructure.Services
         /// <param name="criteria">the search criteria <see cref="BaseSearchCriteria"/></param>
         /// <returns>the paginated result of booking response model <see cref="BookingResponseModel"/></returns>
 
-        public async Task<PaginatedResult<BookingResponseModel>> GetPaginatedBookingsAsync(BaseSearchCriteria criteria)
+        public async Task<PaginatedResult<BookingListResponseModel>> GetPaginatedBookingsAsync(BaseSearchCriteria criteria)
         {
             return await ExecuteWithResultAsync(async () =>
             {
@@ -53,9 +53,9 @@ namespace Infrastructure.Services
 
                 var totalCount = (int)parameters.FirstOrDefault(p => p.ParameterName == "@TotalCount")?.Value;
 
-                return new PaginatedResult<BookingResponseModel>
+                return new PaginatedResult<BookingListResponseModel>
                 {
-                    Items = bookings.Select(b => b.Adapt<BookingResponseModel>()),
+                    Items = new List<BookingListResponseModel>(),
                     TotalCount = totalCount,
                     PageNumber = criteria.Page,
                     PageSize = criteria.Size

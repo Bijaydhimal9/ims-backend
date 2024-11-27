@@ -67,4 +67,6 @@ public class InmateProfile : AuditableEntity
     /// Gets or sets the bookings associated with the inmate
     /// </summary>
     public virtual IList<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public string FullName => $"{FirstName} {MiddleName} {LastName}";
 }

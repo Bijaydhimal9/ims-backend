@@ -12,6 +12,7 @@ using Domain.Entities;
 using Infrastructure.Common;
 using Mapster;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
 {
@@ -58,6 +59,15 @@ namespace Infrastructure.Services
         {
             return await ExecuteWithResultAsync(async () =>
             {
+                var existingInmate = await _unitOfWork.DbContext.InmateProfiles
+                    .FirstOrDefaultAsync(x =>
+                        x.DateOfBirth == model.DateOfBirth ||
+                        x.CitizenshipNumber == model.CitizenshipNumber);
+                if (existingInmate != null)
+                {
+                    _logger.LogWarning($"Attempted to create duplicate inmate profile with CitizenshipNumber: {model.CitizenshipNumber}");
+                    throw new ForbiddenException("An inmate with the same date of birth and citizenship number already exists");
+                }
                 var inmateProfile = model.Adapt<InmateProfile>();
                 inmateProfile.CreatedBy = currentUserId;
                 inmateProfile.CreatedOn = DateTime.UtcNow;

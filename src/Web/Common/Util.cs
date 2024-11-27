@@ -28,7 +28,7 @@ namespace Web.Common
 
         public static CurrentUser ToLoggedInUser(this ClaimsPrincipal claimsPrincipal)
         {
-            var userId = claimsPrincipal.GetClaim("Id", isRequired: true);
+            var userId = claimsPrincipal.GetClaim("uid", isRequired: true);
             var email = claimsPrincipal.GetClaim(ClaimTypes.Email, isRequired: false);
             return new CurrentUser { UserId = userId, Email = email };
         }
