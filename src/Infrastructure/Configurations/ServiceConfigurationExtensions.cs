@@ -38,7 +38,7 @@ namespace Infrastructure.Configurations
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-            services.AddHostedService<IdentityDataSeeder>();
+            services.AddHostedService<DataSeeder>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();

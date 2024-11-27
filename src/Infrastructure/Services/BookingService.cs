@@ -123,11 +123,10 @@ namespace Infrastructure.Services
                 new MySqlParameter("@Status", BookingStatus.Active),
                 new MySqlParameter("@CreatedOn", DateTime.UtcNow),
                 new MySqlParameter("@CreatedBy", currentUserId),
-                new MySqlParameter("@Comments", booking.Comments ?? (object)DBNull.Value)
                 };
 
                 await _unitOfWork.DbContext.Database
-                    .ExecuteSqlRawAsync("CALL CreateBooking(@Id, @InmateId, @BookingNumber, @BookingDate, @FacilityName, " +
+                    .ExecuteSqlRawAsync("CALL CreateBookingCharges(@BookingId, @InmateId, @BookingNumber, @BookingDate, @FacilityName, " +
                         "@BookingLocation, @Status, @Comments, @CreatedOn, @CreatedBy)", parameters);
 
                 return await GetBookingByIdAsync(newBookingId, currentUserId);
@@ -155,7 +154,6 @@ namespace Infrastructure.Services
                 new MySqlParameter("@BookingLocation", booking.BookingLocation),
                 new MySqlParameter("@ReleaseDate", booking.ReleaseDate.HasValue ? booking.ReleaseDate : (object)DBNull.Value),
                 new MySqlParameter("@ReleaseReason", booking.ReleaseReason ?? (object)DBNull.Value),
-                new MySqlParameter("@Comments", booking.Comments ?? (object)DBNull.Value),
                 new MySqlParameter("@UpdatedOn", DateTime.UtcNow),
                 new MySqlParameter("@UpdatedBy", currentUserId)
                 };

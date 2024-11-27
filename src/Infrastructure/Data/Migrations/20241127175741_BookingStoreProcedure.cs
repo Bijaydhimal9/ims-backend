@@ -127,8 +127,6 @@ namespace Infrastructure.Data.Migrations
                 WHERE Id = BookingIdentity;
             END;
         ");
-
-
         }
 
         /// <inheritdoc />

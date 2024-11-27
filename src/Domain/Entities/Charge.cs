@@ -6,11 +6,6 @@ namespace Domain.Entities;
 public class Charge : AuditableEntity
 {
     /// <summary>
-    /// Gets or sets the booking ID
-    /// </summary>
-    public Guid BookingId { get; set; }
-
-    /// <summary>
     /// Gets or sets the charge name
     /// </summary>
     public required string ChargeName { get; set; }
@@ -29,17 +24,7 @@ public class Charge : AuditableEntity
     /// Gets or sets the status
     /// </summary>
     public ChargeStatus Status { get; set; }
-
-    /// <summary>
-    /// Gets or sets the charge date
-    /// </summary>
-    public DateTime? ChargeDate { get; set; }
-
-    /// <summary>
-    /// Gets or sets the booking
-    /// </summary>
-    public virtual Booking? Booking { get; set; }
-
+   
     /// <summary>
     /// Gets or sets the application user
     /// </summary>

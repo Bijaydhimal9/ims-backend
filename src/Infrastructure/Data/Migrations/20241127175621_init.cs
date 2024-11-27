@@ -201,6 +201,38 @@ namespace Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Charges",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ChargeName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ChargeCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UpdatedOn = table.Column<DateTime>(type: "DATETIME", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Charges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Charges_AspNetUsers_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "InmateProfiles",
                 columns: table => new
                 {
@@ -261,8 +293,6 @@ namespace Infrastructure.Data.Migrations
                     ReleaseDate = table.Column<DateTime>(type: "DATETIME", nullable: true),
                     ReleaseReason = table.Column<string>(type: "VARCHAR(500)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Comments = table.Column<string>(type: "VARCHAR(1000)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
@@ -289,22 +319,12 @@ namespace Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Charges",
+                name: "BookingCharges",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ChargeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     BookingId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ChargeName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ChargeCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ChargeDate = table.Column<DateTime>(type: "DATETIME", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedBy = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedOn = table.Column<DateTime>(type: "DATETIME", nullable: false),
@@ -314,22 +334,23 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Charges", x => x.Id);
+                    table.PrimaryKey("PK_BookingCharges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Charges_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Charges_AspNetUsers_CreatedBy",
+                        name: "FK_BookingCharges_AspNetUsers_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Charges_Bookings_BookingId",
+                        name: "FK_BookingCharges_Bookings_BookingId",
                         column: x => x.BookingId,
                         principalTable: "Bookings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookingCharges_Charges_ChargeId",
+                        column: x => x.ChargeId,
+                        principalTable: "Charges",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -373,6 +394,21 @@ namespace Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_BookingCharges_BookingId",
+                table: "BookingCharges",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingCharges_ChargeId",
+                table: "BookingCharges",
+                column: "ChargeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingCharges_CreatedBy",
+                table: "BookingCharges",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_BookingNumber",
                 table: "Bookings",
                 column: "BookingNumber",
@@ -388,16 +424,6 @@ namespace Infrastructure.Data.Migrations
                 table: "Bookings",
                 columns: new[] { "InmateId", "Status" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Charges_ApplicationUserId",
-                table: "Charges",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Charges_BookingId",
-                table: "Charges",
-                column: "BookingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Charges_CreatedBy",
@@ -435,13 +461,16 @@ namespace Infrastructure.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Charges");
+                name: "BookingCharges");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "Charges");
 
             migrationBuilder.DropTable(
                 name: "InmateProfiles");

@@ -28,4 +28,5 @@ public class ApplicationUser : IdentityUser
     /// Gets or sets the charges
     /// </summary>
     public IList<Charge> Charges { get; set; } = new List<Charge>();
+     public IList<BookingCharge> BookingCharges { get; set; } = new List<BookingCharge>();
 }

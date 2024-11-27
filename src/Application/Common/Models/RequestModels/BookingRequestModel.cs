@@ -36,12 +36,7 @@ public class BookingRequestModel
     public string? ReleaseReason { get; set; }
 
     /// <summary>
-    /// Gets or sets the comments
-    /// </summary>
-    public string? Comments { get; set; }
-
-    /// <summary>
     /// Gets or sets the charges
     /// </summary>
-    public List<BookingChargeModel> Charges { get; set; } = new();
+    public List<Guid> ChargesIds { get; set; } = new();
 }

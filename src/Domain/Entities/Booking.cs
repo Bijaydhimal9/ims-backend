@@ -49,11 +49,6 @@ public class Booking : AuditableEntity
     public string? ReleaseReason { get; set; }
 
     /// <summary>
-    /// Get or set comments
-    /// </summary>
-    public string? Comments { get; set; }
-
-    /// <summary>
     /// Get or set inmate profile
     /// </summary>
     public virtual InmateProfile? InmateProfile { get; set; }
@@ -62,9 +57,4 @@ public class Booking : AuditableEntity
     /// Get or set application user
     /// </summary>
     public virtual ApplicationUser? ApplicationUser { get; set; }
-
-    /// <summary>
-    /// Get or set charges
-    /// </summary>
-    public virtual IList<Charge> Charges { get; set; } = new List<Charge>();
 }

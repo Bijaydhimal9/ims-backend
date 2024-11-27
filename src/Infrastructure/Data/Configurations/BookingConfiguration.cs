@@ -21,7 +21,6 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(x => x.BookingLocation).HasColumnType("VARCHAR(200)").IsRequired();
         builder.Property(x => x.ReleaseDate).HasColumnType("DATETIME").IsRequired(false);
         builder.Property(x => x.ReleaseReason).HasColumnType("VARCHAR(500)").IsRequired(false);
-        builder.Property(x => x.Comments).HasColumnType("VARCHAR(1000)").IsRequired(false);
         builder.Property(x => x.Status).IsRequired().HasConversion<string>();
 
         builder.Property(x => x.CreatedBy).HasColumnType("VARCHAR(50)").HasMaxLength(50).IsRequired();

@@ -16,7 +16,6 @@ public class InmateProfileConfiguration : IEntityTypeConfiguration<InmateProfile
     public void Configure(EntityTypeBuilder<InmateProfile> builder)
     {
         builder.HasKey(x => x.Id);
-
         builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.MiddleName).HasMaxLength(100);
         builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
@@ -35,7 +34,6 @@ public class InmateProfileConfiguration : IEntityTypeConfiguration<InmateProfile
 
         builder.HasMany(x => x.Bookings).WithOne(b => b.InmateProfile).HasForeignKey(b => b.InmateId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.ApplicationUser).WithMany(u => u.Inmates).HasForeignKey(x => x.CreatedBy).OnDelete(DeleteBehavior.Restrict);
-
         builder.HasIndex(x => new { x.CitizenshipNumber, x.DateOfBirth }).IsUnique();
 
     }
