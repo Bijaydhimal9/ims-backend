@@ -44,19 +44,28 @@ namespace Infrastructure.Services
                 new MySqlParameter("@PageNumber", criteria.Page),
                 new MySqlParameter("@PageSize", criteria.Size),
                 new MySqlParameter("@SearchTerm", criteria.Search ?? (object)DBNull.Value),
-                new MySqlParameter("@TotalCount", MySqlDbType.Int32) { Direction = ParameterDirection.Output }
                 };
 
-                var bookings = await _unitOfWork.DbContext.Bookings
-                    .FromSqlRaw("CALL GetPaginatedBookings(@PageNumber, @PageSize, @SearchTerm, @TotalCount)", parameters)
+                parameters.Append(new MySqlParameter
+                {
+                    ParameterName = "@TotalCount",
+                    MySqlDbType = MySqlDbType.Int32,
+                    Direction = ParameterDirection.Output
+                });
+
+                var bookings = await _unitOfWork.DbContext.Database
+                    .SqlQueryRaw<BookingListResponseModel>(
+                        "CALL GetPaginatedBookings(@PageNumber, @PageSize, @SearchTerm, @TotalCount)",
+                        parameters)
                     .ToListAsync();
 
-                var totalCount = (int)parameters.FirstOrDefault(p => p.ParameterName == "@TotalCount")?.Value;
+                var totalCount = parameters.FirstOrDefault(p => p.ParameterName == "@TotalCount")?.Value;
+                int totalCountInt = totalCount != null ? Convert.ToInt32(totalCount) : 0;
 
                 return new PaginatedResult<BookingListResponseModel>
                 {
-                    Items = new List<BookingListResponseModel>(),
-                    TotalCount = totalCount,
+                    Items = bookings,
+                    TotalCount = totalCountInt,
                     PageNumber = criteria.Page,
                     PageSize = criteria.Size
                 };
