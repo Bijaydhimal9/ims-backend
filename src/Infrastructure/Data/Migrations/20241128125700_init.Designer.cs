@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127195402_BookingStoreProcedure")]
-    partial class BookingStoreProcedure
+    [Migration("20241128125700_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,7 +137,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -153,8 +153,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("InmateId", "Status")
-                        .IsUnique();
+                    b.HasIndex("InmateId");
 
                     b.ToTable("Bookings");
                 });

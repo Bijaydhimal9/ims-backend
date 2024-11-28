@@ -170,7 +170,7 @@ public class InmateProfileControllerTest
         Assert.IsType<NotFoundResult>(result.Result);
     }
 
-    /// <summary>
+    /// <summary>ß
     /// Test for updating an inmate profile.
     /// </summary>
     [Fact]

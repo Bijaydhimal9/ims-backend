@@ -5,6 +5,7 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Models.RequestModels;
 using Application.Common.Models.ResponseModels;
+using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Common;
 using Infrastructure.Helpers;
@@ -97,6 +98,29 @@ public class BookingService : BaseService, IBookingService
     }
 
     /// <summary>
+    /// get booking by inmate id
+    /// </summary>
+    /// <param name="inmateId"> the inmate id</param>
+    /// <returns> the list of <see cref="Booking"/> </returns>
+    public async Task<IList<Booking>> GetBookingByInmateIdAsync(Guid inmateId)
+    {
+        return await ExecuteWithResultAsync(async () =>
+        {
+            var parameters = new[]
+            {
+                 new MySqlParameter("@Id", inmateId)
+             };
+
+            var entities = await _unitOfWork.DbContext.Bookings
+                .FromSqlRaw("CALL GetBookingByInmateId(@Id)", parameters)
+                .ToListAsync();
+
+            return entities;
+        });
+    }
+
+
+    /// <summary>
     /// Create booking
     /// </summary>
     /// <param name="booking">the instance of booking request model <see cref="BookingRequestModel"/></param>
@@ -106,8 +130,13 @@ public class BookingService : BaseService, IBookingService
     {
         return await ExecuteWithResultAsync(async () =>
         {
+            var inmateBookings = await GetBookingByInmateIdAsync(booking.InmateId).ConfigureAwait(false);
+            if (inmateBookings.Count != 0 && inmateBookings.Any(x => x.Status == BookingStatus.Active))
+            {
+                throw new ForbiddenException("Inmate already has an active booking");
+            }
             var newBookingId = Guid.NewGuid().ToString();
-            var bookingChargeId =Guid.NewGuid().ToString();
+            var bookingChargeId = Guid.NewGuid().ToString();
             var parameters = new[]
             {
                 new MySqlParameter("@Id", newBookingId),
@@ -188,6 +217,7 @@ public class BookingService : BaseService, IBookingService
         });
     }
 
+
     /// <summary>
     /// Delete booking
     /// </summary>
@@ -208,4 +238,27 @@ public class BookingService : BaseService, IBookingService
         });
     }
 
+    /// <summary>
+    /// Handle to release booking
+    /// </summary>
+    /// <param name="bookingId"> the booking id</param>
+    /// <param name="model"> the instance of <see cref="BookingReleaseRequestModel"/> </param>
+    /// <param name="currentUserId"> the current user id </param>
+    /// <returns> the instance of <see cref="BookingResponseModel"/> </returns>
+    public async Task<BookingResponseModel> ReleaseBookingAsync(string bookingId, BookingReleaseRequestModel model, string currentUserId)
+    {
+        return await ExecuteWithResultAsync(async () =>
+       {
+           var parameters = new[]
+           {
+              new MySqlParameter("@BookingId",bookingId),
+                new MySqlParameter("@ReleaseDate", DateTime.UtcNow),
+                new MySqlParameter("@ReleaseReason", model.ReleaseReason),
+                new MySqlParameter("@Status",BookingStatus.Released)
+           };
+           await _unitOfWork.DbContext.Database
+               .ExecuteSqlRawAsync("CALL BookingReleaseUpdate(@BookingId,@ReleaseDate,@ReleaseReason,@Status)", parameters);
+           return await GetBookingByIdAsync(bookingId, currentUserId);
+       });
+    }
 }

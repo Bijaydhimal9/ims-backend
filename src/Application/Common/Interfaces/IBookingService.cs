@@ -57,4 +57,12 @@ public interface IBookingService
     /// <param name="currentUserId">the current user id</param>
     /// <returns>the task instance</returns>
     Task DeleteBookingAsync(string bookingIdentity, string currentUserId);
+
+    /// <summary>
+    /// Release booking
+    /// </summary>
+    /// <param name="model"> the instance of <see cref="Booking"/> </param>
+    /// <param name="currentUserId"></param>
+    /// <returns> the task complete </returns> 
+    Task<BookingResponseModel> ReleaseBookingAsync(string bookingId,BookingReleaseRequestModel model, string currentUserId);
 }

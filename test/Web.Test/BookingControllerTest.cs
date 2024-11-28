@@ -18,7 +18,8 @@ public class BookingControllerTest
 {
     private readonly Mock<IBookingService> _mockBookingService;
     private readonly Mock<IValidator<BookingRequestModel>> _mockValidator;
-    private readonly BookingController _controller;
+        private readonly Mock<IValidator<BookingReleaseRequestModel>> _mockReleaseValidator;
+        private readonly BookingController _controller;
     private readonly string _userId = Guid.NewGuid().ToString();
 
     /// <summary>
@@ -28,7 +29,8 @@ public class BookingControllerTest
     {
         _mockBookingService = new Mock<IBookingService>();
         _mockValidator = new Mock<IValidator<BookingRequestModel>>();
-        _controller = new BookingController(_mockBookingService.Object, _mockValidator.Object);
+        _mockReleaseValidator = new Mock<IValidator<BookingReleaseRequestModel>>();
+        _controller = new BookingController(_mockBookingService.Object, _mockValidator.Object,_mockReleaseValidator.Object);
 
         // Setup controller context with user claims
         var claims = new List<Claim>

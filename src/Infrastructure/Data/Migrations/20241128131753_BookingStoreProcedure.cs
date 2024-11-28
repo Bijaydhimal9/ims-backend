@@ -7,7 +7,7 @@ namespace Infrastructure.Data.Migrations
     /// <inheritdoc />
     public partial class BookingStoreProcedure : Migration
     {
-         protected override void Up(MigrationBuilder migrationBuilder)
+          protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
             CREATE PROCEDURE GetPaginatedBookings(
@@ -35,7 +35,8 @@ namespace Infrastructure.Data.Migrations
                     CONCAT(i.FirstName, ' ', i.MiddleName, ' ', i.LastName) AS InmateName,
                     b.BookingLocation,
                     b.FacilityName,
-                    b.BookingDate
+                    b.BookingDate,
+                    b.Status
                 FROM Bookings b
                 LEFT JOIN InmateProfiles i ON b.InmateId = i.Id
                 WHERE SearchTerm IS NULL 
@@ -54,6 +55,15 @@ namespace Infrastructure.Data.Migrations
             )
             BEGIN
                 SELECT * FROM Bookings WHERE Id = Id; 
+            END
+            ");
+
+            migrationBuilder.Sql(@"
+            CREATE PROCEDURE GetBookingByInmateId(
+            IN Id VARCHAR(50)
+            )
+            BEGIN
+                SELECT * FROM Bookings WHERE InmateId =Id; 
             END
             ");
 
@@ -189,6 +199,22 @@ namespace Infrastructure.Data.Migrations
             END;
         ");
 
+        migrationBuilder.Sql(@"
+            CREATE PROCEDURE BookingReleaseUpdate(
+                IN BookingId VARCHAR(50),
+                IN ReleaseDate DATETIME,
+                IN ReleaseReason VARCHAR(255),
+                IN Status VARCHAR(50)
+            )
+            BEGIN
+                UPDATE Bookings
+                SET Status = Status,
+                ReleaseDate = ReleaseDate,
+                ReleaseReason = ReleaseReason
+                WHERE Id = BookingId;
+            END;
+        ");
+
             migrationBuilder.Sql(@"
             CREATE PROCEDURE DeleteBooking(
                 IN BookingIdentity VARCHAR(50)
@@ -211,6 +237,8 @@ namespace Infrastructure.Data.Migrations
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS UpdateBooking");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS BookingStatusUpdate");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS DeleteBooking");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS BookingReleaseUpdate");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS GetBookingByInmateId");
         }
     }
 }

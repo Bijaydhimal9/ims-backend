@@ -134,7 +134,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -150,8 +150,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("InmateId", "Status")
-                        .IsUnique();
+                    b.HasIndex("InmateId");
 
                     b.ToTable("Bookings");
                 });

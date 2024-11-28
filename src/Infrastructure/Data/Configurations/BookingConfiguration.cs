@@ -30,8 +30,6 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
 
         builder.HasOne(x => x.InmateProfile).WithMany(i => i.Bookings).HasForeignKey(x => x.InmateId).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.ApplicationUser).WithMany(u => u.Bookings).HasForeignKey(x => x.CreatedBy).OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasIndex(x => new { x.InmateId, x.Status }).IsUnique();
         builder.HasIndex(x => x.BookingNumber).IsUnique();
 
     }

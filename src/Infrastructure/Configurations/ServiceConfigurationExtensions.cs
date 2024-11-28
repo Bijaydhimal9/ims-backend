@@ -43,9 +43,7 @@ public static class ServiceConfigurationExtensions
         services.AddSingleton<IValidator<LoginRequestModel>, LoginValidator>();
         services.AddSingleton<IValidator<InmateProfileRequestModel>, InmateProfileValidator>();
         services.AddSingleton<IValidator<BookingRequestModel>, BookingValidator>();
-
-
-
+        services.AddSingleton<IValidator<BookingReleaseRequestModel>, BookingReleaseValidator>();
 
         return services;
     }

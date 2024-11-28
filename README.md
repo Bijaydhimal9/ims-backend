@@ -8,6 +8,14 @@
 
 ## Run In Development
 
+```
+dotnet build
+```
+
+```
+dotnet ef database update  --project src/Infrastructure --startup-project src/Web
+```
+
 ```bash
 dotnet watch run --project=src/Web/Web.csproj
 ```

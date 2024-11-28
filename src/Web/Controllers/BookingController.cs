@@ -13,11 +13,14 @@ public class BookingController : BaseApiController
 {
     private readonly IBookingService _bookingService;
     private readonly IValidator<BookingRequestModel> _validator;
+    private readonly IValidator<BookingReleaseRequestModel> _releaseValidator;
     public BookingController(IBookingService bookingService,
-    IValidator<BookingRequestModel> validator)
+    IValidator<BookingRequestModel> validator,
+    IValidator<BookingReleaseRequestModel> releaseValidator)
     {
         _bookingService = bookingService;
         _validator = validator;
+        _releaseValidator = releaseValidator;
     }
 
     /// <summary>
@@ -79,6 +82,20 @@ public class BookingController : BaseApiController
     public async Task<IActionResult> UpdateStatus(string id, [FromBody] BookingStatus status)
     {
         await _bookingService.UpdateBookingStatusAsync(id, status, CurrentUser.UserId);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Update booking release
+    /// </summary>
+    /// <param name="id"> the booking id or booking number</param>
+    /// <param name="model"> the instance of <see cref="BookingReleaseRequestModel"/> </param>
+    /// <returns>no content</returns>
+    [HttpPut("{id}/release")]
+    public async Task<IActionResult> ReleaseBooking(string id, [FromBody] BookingReleaseRequestModel model)
+    {
+        await _releaseValidator.ValidateAsync(model, options => options.ThrowOnFailures()).ConfigureAwait(false);
+        await _bookingService.ReleaseBookingAsync(id, model, CurrentUser.UserId);
         return NoContent();
     }
 

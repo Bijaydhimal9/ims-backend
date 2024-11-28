@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace Application.Common.Models.ResponseModels;
 
 public class BookingListResponseModel
@@ -11,6 +13,11 @@ public class BookingListResponseModel
     /// Gets or sets the inmate id
     /// </summary>
     public Guid InmateId { get; set; }
+
+    /// <summary>
+    /// Get or set status
+    /// </summary>
+    public string Status { get; set; }
 
     /// <summary>
     /// Gets or sets the inmate name

@@ -288,7 +288,7 @@ namespace Infrastructure.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     BookingLocation = table.Column<string>(type: "VARCHAR(200)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Status = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ReleaseDate = table.Column<DateTime>(type: "DATETIME", nullable: true),
                     ReleaseReason = table.Column<string>(type: "VARCHAR(500)", nullable: true)
@@ -420,10 +420,9 @@ namespace Infrastructure.Data.Migrations
                 column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_InmateId_Status",
+                name: "IX_Bookings_InmateId",
                 table: "Bookings",
-                columns: new[] { "InmateId", "Status" },
-                unique: true);
+                column: "InmateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Charges_CreatedBy",
