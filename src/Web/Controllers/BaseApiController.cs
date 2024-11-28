@@ -4,29 +4,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Common;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+[ApiVersion("1.0")]
+[Route("api/[controller]")]
+[ApiController]
+[Produces("application/json")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+public class BaseApiController : ControllerBase
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
-    [ApiController]
-    [Produces("application/json")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class BaseApiController : ControllerBase
+    private CurrentUser _currentUser;
+
+    protected CurrentUser CurrentUser
     {
-        private CurrentUser _currentUser;
-
-        protected CurrentUser CurrentUser
+        get
         {
-            get
+            if (_currentUser == null && User?.Identity?.IsAuthenticated == true)
             {
-                if (_currentUser == null && User?.Identity?.IsAuthenticated == true)
-                {
-                    _currentUser = User.ToLoggedInUser();
-                }
-                return _currentUser;
+                _currentUser = User.ToLoggedInUser();
             }
+            return _currentUser;
         }
-
-        protected BaseApiController() { }
     }
+
+    protected BaseApiController() { }
 }

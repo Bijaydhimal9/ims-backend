@@ -2,7 +2,6 @@ using Domain.Enums;
 
 namespace Application.Common.Models.ResponseModels;
 
-
 /// <summary>
 /// Represents an inmate profile response model
 /// </summary>

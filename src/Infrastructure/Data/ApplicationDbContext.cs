@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
     }
-    
+
     public DbSet<InmateProfile> InmateProfiles { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Charge> Charges { get; set; }
