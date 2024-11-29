@@ -56,3 +56,10 @@ Run docker container
 ```bash
 docker run -d -p 8080:80 --name inmatesystemapi inmatemanagementsystem
 ```
+
+## Admin Authentication
+
+```
+email : admin@gmail.com
+password : BookingSystem@123
+```
